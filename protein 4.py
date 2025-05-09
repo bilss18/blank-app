@@ -78,7 +78,8 @@ def main():
 
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
-        st.markdown('<img src="https://images.app.goo.gl/Zsi2UoKxi7jobofH6" width="500">', unsafe_allow_html=True)
+        st.markdown('<img src="https://media.tenor.com/1mi8BRdrVjwAAAAC/egg-protein.gif
+" width="500">', unsafe_allow_html=True)
         st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, dan tingkat aktivitas. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
 
 if __name__ == '__main__':
