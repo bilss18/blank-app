@@ -81,5 +81,5 @@ def main():
         st.markdown('<img src="https://jonmgomes.com/wp-content/uploads/2020/05/Comp_1.gif" width="500">', unsafe_allow_html=True)
         st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, dan tingkat aktivitas. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     main()
