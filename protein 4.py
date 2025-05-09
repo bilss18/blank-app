@@ -31,7 +31,7 @@ def main():
     # Background soft blue dan font
     st.markdown("""
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap');
+        @import url('https://images.app.goo.gl/Zsi2UoKxi7jobofH6');
         .stApp {
             background-color: #d0e7f9;
             font-family: 'Comic Neue', cursive;
