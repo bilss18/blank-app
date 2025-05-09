@@ -31,7 +31,7 @@ def main():
     # Background soft blue dan font
     st.markdown("""
         <style>
-        @import url('https://images.app.goo.gl/Zsi2UoKxi7jobofH6');
+        @import url('https://images.app.goo.gl/Zsi2UoKxi7jobofH6https://images.app.goo.gl/Zsi2UoKxi7jobofH6');
         .stApp {
             background-color: #d0e7f9;
             font-family: 'Comic Neue', cursive;
@@ -78,7 +78,7 @@ def main():
 
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
-        st.markdown('<img src="https://jonmgomes.com/wp-content/uploads/2020/05/Comp_1.gif" width="500">', unsafe_allow_html=True)
+        st.markdown('<img src="https://images.app.goo.gl/Zsi2UoKxi7jobofH6" width="500">', unsafe_allow_html=True)
         st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, dan tingkat aktivitas. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
 
 if __name__ == '__main__':
