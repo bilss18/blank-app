@@ -13,24 +13,24 @@ def calculate_protein_requirement(weight, activity_level):
 def main():
     st.title('Kalkulator Kebutuhan Protein Harian')
 
-    background_color = "#A60404"
-    font_size = "25px"
-    header_font_size = "40px"
-    subheader_font_size = "30px"
-    st.markdown(f"""
-        <style>
-        .stApp {{
-            background-color: {background_color} !important;
-            font-size: {font_size} !important;
-        }}
-        h1 {{
-            font-size: {header_font_size} !important;
-        }}
-        h2 {{
-            font-size: {subheader_font_size} !important;
-        }}
-        </style>
-        """, unsafe_allow_html=True)
+    st.markdown("""
+    <style>
+    .stApp {
+        background-image: radial-gradient(white 10%, transparent 11%), radial-gradient(white 10%, transparent 11%);
+        background-color: #ff69b4;
+        background-position: 0 0, 25px 25px;
+        background-size: 50px 50px;
+        font-size: 25px !important;
+    }
+    h1 {
+        font-size: 40px !important;
+    }
+    h2 {
+        font-size: 30px !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 
     menu = st.sidebar.selectbox("Menu", ('Tentang Aplikasi', 'Kalkulator', 'Perkenalan Kelompok'))
 
