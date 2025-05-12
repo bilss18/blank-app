@@ -83,7 +83,6 @@ def main():
         if st.button("✅ OK, Hitung Kebutuhan Protein"):
             total, dasar, tambahan = calculate_protein_requirement(weight, activity_level, gender, age, goal)
 
-            # Menampilkan hasil perhitungan
             with st.expander("📊 Lihat Hasil Perhitungan Kebutuhan Protein Anda"):
                 st.success(f"🍗 Kebutuhan protein harian Anda untuk *{goal.lower()}* adalah sekitar *{total:.1f} gram* per hari! 😋")
                 st.markdown(f"""
@@ -95,11 +94,16 @@ def main():
                     </ul>
                 """, unsafe_allow_html=True)
 
-                # Gambar alpukat lucu
+                # Tampilkan gambar alpukat
                 st.image("avocado.webp", width=300)
 
-                # Suara lucu
-                st.audio("cartoon-sfx-cheerful-wow-wah-cute-adorable-surprised-338343.mp3")
+                # Putar audio secara otomatis saat hasil muncul
+                st.markdown("""
+                    <audio autoplay>
+                        <source src="cartoon-sfx-cheerful-wow-wah-cute-adorable-surprised-338343.mp3" type="audio/mpeg">
+                        Browser Anda tidak mendukung elemen audio.
+                    </audio>
+                """, unsafe_allow_html=True)
 
                 show_food_recommendations()
 
