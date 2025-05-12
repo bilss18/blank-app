@@ -73,7 +73,7 @@ def main():
             font-family: 'Comic Sans MS', cursive;
         }
         html, body, [class*="css"] {
-            color: #000000;
+            color: #000000 !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -114,10 +114,8 @@ def main():
                     </ul>
                 """, unsafe_allow_html=True)
 
-                # Tampilkan animasi dan audio
                 show_avocado_image("avocado.webp")
                 autoplay_audio("snd_fragment_retrievewav-14728.mp3")
-
                 show_food_recommendations()
 
     elif menu == 'Perkenalan Kelompok':
