@@ -79,7 +79,7 @@ def main():
         st.subheader('👩‍🏫 Kelompok 5 (PMIP 1-E1)')
         st.write('📚 Anggota:')
         st.write('1. Chelsea Naila Darmayanti (2420581) 🐣')
-        st.write('2. Fadliansyah (2420499) 🐈')
+        st.write('2. Fadliansyah (242599) 🐈')
         st.write('3. Nabila Kirania Siti Saleha (2420629) 🦩')
         st.write('4. Sopian Darul Kamal (2420666) 🐿')
         st.write('5. Suci Rahma Safitri (2420668) 🦭')
