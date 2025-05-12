@@ -31,13 +31,12 @@ def main():
     # Background soft blue dan font
     st.markdown("""
         <style>
-        @import url('https://images.app.goo.gl/Zsi2UoKxi7jobofH6https://images.app.goo.gl/Zsi2UoKxi7jobofH6');
         .stApp {
             background-color: #d0e7f9;
-            font-family: 'Comic Neue', cursive;
+            font-family: 'Comic Sans MS', cursive;
         }
         h1, h2, h3, .stTextInput>div>div>input, .stSelectbox>div>div>div {
-            font-family: 'Comic Neue', cursive;
+            font-family: 'Comic Sans MS', cursive;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -61,10 +60,7 @@ def main():
         if weight and age:
             protein_needed = calculate_protein_requirement(weight, activity_level, gender, age)
             st.success(f"🍗 Kebutuhan protein harian Anda adalah sekitar *{protein_needed:.1f} gram* per hari! 😋")
-
-            # Tampilkan animasi protein (GIF)
             st.markdown('<img src="https://media.tenor.com/1mi8BRdrVjwAAAAC/egg-protein.gif" width="300">', unsafe_allow_html=True)
-
             show_food_recommendations()
 
     elif menu == 'Perkenalan Kelompok':
@@ -72,17 +68,14 @@ def main():
         st.write('📚 Anggota:')
         st.write('1. Chelsea Naila Darmayanti (2420581) 🐣')
         st.write('2. Fadliansyah (2420499) 🐈')
-        st.write('3. Nabila Kirania Siti Saleha(2420629) 🦩')
+        st.write('3. Nabila Kirania Siti Saleha (2420629) 🦩')
         st.write('4. Sopian Darul Kamal (2420666) 🐿')
         st.write('5. Suci Rahma Safitri (2420668) 🦭')
 
-     elif menu == 'Tentang Aplikasi':
+    elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
-        import streamlit as st
-        st.title("GIF Patrick Makan 🍔")
         st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_column_width=True)
         st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, dan tingkat aktivitas. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
-
 
 if __name__ == '__main__':
     main()
