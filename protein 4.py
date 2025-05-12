@@ -30,17 +30,17 @@ def show_food_recommendations():
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
 
-    # Mengubah latar belakang menjadi hijau sage dan teks menjadi hitam
+    # Latar lilac dan teks hitam
     st.markdown("""
         <style>
         .stApp {
-            background-color: #B2AC88;  /* Latar belakang hijau sage */
+            background-color: #C8A2C8;  /* Lilac */
             background-size: cover;
-            height: 100vh; /* Menjaga latar belakang menutupi seluruh layar */
+            color: #000000;  /* Teks hitam */
         }
-        .css-ffhzg2 {  /* Selector untuk elemen halaman Streamlit */
+        html, body, [class*="css"]  {
             font-family: 'Comic Sans MS', cursive;
-            color: #000000;  /* Mengubah warna teks menjadi hitam */
+            color: #000000 !important;
         }
         </style>
     """, unsafe_allow_html=True)
