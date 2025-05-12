@@ -96,10 +96,10 @@ def main():
                 """, unsafe_allow_html=True)
 
                 # Gambar alpukat lucu
-                st.image("/mnt/data/avocado.webp", width=300)
+                st.image("avocado.webp", width=300)
 
-                # Suara baru
-                st.audio("/mnt/data/cartoon-sfx-cheerful-wow-wah-cute-adorable-surprised-338343.mp3")
+                # Suara lucu
+                st.audio("cartoon-sfx-cheerful-wow-wah-cute-adorable-surprised-338343.mp3")
 
                 show_food_recommendations()
 
