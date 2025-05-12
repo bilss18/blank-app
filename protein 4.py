@@ -79,8 +79,10 @@ def main():
      elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
         import streamlit as st
-        st.title("GIF Patrick Makan 🍔")
-        st.image("foto_patrik.gif", caption="Patrick lagi makan burger", use_column_width=True)
+
+st.title("GIF Patrick Makan 🍔")
+st.image("foto_patrik.gif", caption="Patrick lagi makan burger", use_column_width=True)
+
         st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, dan tingkat aktivitas. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
 
 
