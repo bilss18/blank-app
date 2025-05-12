@@ -79,10 +79,10 @@ def main():
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
         import streamlit as st
-st.title("Selamat Datang di Kalkulator Protein 🍔💪")
-# Tampilkan animasi Patrick
-st.image("foto_patrik.gif", caption="Patrick makan demi protein! 🍗", use_column_width=True)
-st.write("Yuk hitung kebutuhan proteinmu agar sekuat Patrick! 💥")
+        st.title("Selamat Datang di Kalkulator Protein 🍔💪")
+        # Tampilkan animasi Patrick
+        st.image("foto_patrik.gif", caption="Patrick makan demi protein! 🍗", use_column_width=True)    
+        st.write("Yuk hitung kebutuhan proteinmu agar sekuat Patrick! 💥")
 
 
 if __name__ == '__main__':
