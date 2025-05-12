@@ -66,14 +66,16 @@ def show_food_recommendations():
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
 
+    # CSS disederhanakan untuk warna font hitam & styling dasar
     st.markdown("""
         <style>
-        .stApp {
+        .stApp, html, body {
             background-color: #E6CCF5;
             font-family: 'Comic Sans MS', cursive;
+            color: black !important;
         }
-        html, body, [class*="css"] {
-            color: #000000 !important;
+        label, .stSidebar, .css-1v3fvcr, .css-1d391kg {
+            color: black !important;
         }
         </style>
     """, unsafe_allow_html=True)
