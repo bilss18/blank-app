@@ -30,12 +30,12 @@ def show_food_recommendations():
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
 
-    # Mengubah latar belakang menjadi warna pink dengan gambar motif makanan tinggi protein
+    # Mengubah latar belakang menjadi warna pink dengan motif yang lebih jelas
     st.markdown("""
         <style>
         .stApp {
             background-color: #FFB6C1;  /* Latar belakang warna pink muda */
-            background-image: url('https://www.transparenttextures.com/patterns/triangles.png');
+            background-image: url('https://www.transparenttextures.com/patterns/dark-wood.png');
             background-size: cover; /* Motif menutupi seluruh layar */
             height: 100vh; /* Menjaga latar belakang menutupi seluruh layar */
         }
