@@ -30,15 +30,16 @@ def show_food_recommendations():
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
 
-    # Gunakan warna latar belakang dan pola tekstur
+    # Gunakan background secara langsung menggunakan CSS
     st.markdown("""
         <style>
         .stApp {
             background: linear-gradient(to bottom, #FFD194, #FFCC70);  /* Latar belakang Gradien */
             background-image: url('https://www.transparenttextures.com/patterns/cloudy.png');
             background-size: cover; /* Pastikan pola tekstur menutupi seluruh layar */
+            height: 100vh; /* Menjaga latar belakang menutupi seluruh layar */
         }
-        h1, h2, h3, .stTextInput>div>div>input, .stSelectbox>div>div>div {
+        .css-ffhzg2 {  /* Selector untuk elemen halaman Streamlit */
             font-family: 'Comic Sans MS', cursive;
         }
         </style>
