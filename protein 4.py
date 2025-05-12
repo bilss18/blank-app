@@ -1,7 +1,6 @@
 import streamlit as st
 
 def calculate_protein_requirement(weight, activity_level, gender, age):
-    # Rekomendasi dasar
     multiplier = {
         'Sedentary (tidak aktif)': 0.8,
         'Moderate (cukup aktif)': 1.2,
@@ -17,22 +16,26 @@ def calculate_protein_requirement(weight, activity_level, gender, age):
     return weight * (multiplier[activity_level] + adjustment)
 
 def show_food_recommendations():
-    st.markdown("🍽 *Rekomendasi Makanan Tinggi Protein:*")
-    st.markdown("- 🥩 Daging ayam tanpa kulit")
-    st.markdown("- 🐟 Ikan salmon atau tuna")
-    st.markdown("- 🥚 Telur rebus")
-    st.markdown("- 🧀 Tahu / Tempe")
-    st.markdown("- 🥛 Susu rendah lemak atau greek yogurt")
-    st.markdown("- 🥜 Kacang almond atau edamame")
+    st.markdown("🍽 **Rekomendasi Makanan Tinggi Protein:**")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("- 🥩 Daging ayam tanpa kulit")
+        st.markdown("- 🐟 Ikan salmon atau tuna")
+        st.markdown("- 🥚 Telur rebus")
+    with col2:
+        st.markdown("- 🧀 Tahu / Tempe")
+        st.markdown("- 🥛 Susu rendah lemak / greek yogurt")
+        st.markdown("- 🥜 Kacang almond / edamame")
 
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
 
-    # Background soft blue dan font
+    # Background jingga langit dengan awan (motif menggunakan CSS gradient + SVG cloud pattern)
     st.markdown("""
         <style>
         .stApp {
-            background-color: #d0e7f9;
+            background: linear-gradient(to bottom, #FFD194, #FFCC70);
+            background-image: url('https://www.transparenttextures.com/patterns/cloudy.png');
             font-family: 'Comic Sans MS', cursive;
         }
         h1, h2, h3, .stTextInput>div>div>input, .stSelectbox>div>div>div {
