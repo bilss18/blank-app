@@ -1,6 +1,6 @@
 import streamlit as st
 
-# Fungsi menghitung kebutuhan protein
+# Fungsi untuk menghitung kebutuhan protein
 def calculate_protein_requirement(weight, activity_level, gender, age, goal):
     multiplier = {
         'Sedentary (tidak aktif)': 0.8,
@@ -64,8 +64,10 @@ def main():
     if menu == 'Kalkulator':
         st.subheader('✨ Hitung Protein Harian Anda di sini!')
 
+        # Input data pengguna
         age = st.number_input('📅 Masukkan umur Anda (tahun):', min_value=1, step=1)
         gender = st.selectbox('🚻 Pilih jenis kelamin Anda:', ['Laki-laki', 'Perempuan'])
+        height = st.number_input('📏 Masukkan tinggi badan Anda (cm):', min_value=50, step=1)
         weight = st.number_input('⚖ Masukkan berat badan Anda (kg):', min_value=1.0, step=0.1)
         activity_level = st.selectbox('🏃‍♀ Pilih tingkat aktivitas Anda:', [
             'Sedentary (tidak aktif)', 
@@ -81,15 +83,23 @@ def main():
         if st.button("✅ OK, Hitung Kebutuhan Protein"):
             total, dasar, tambahan = calculate_protein_requirement(weight, activity_level, gender, age, goal)
 
-            st.success(f"🍗 Kebutuhan protein harian Anda untuk *{goal.lower()}* adalah sekitar *{total:.1f} gram* per hari! 😋")
-            st.markdown(f"""
-                <ul>
-                <li>Kebutuhan dasar: {dasar:.1f} gram</li>
-                <li>Penyesuaian karena tujuan: {tambahan:+.1f} gram</li>
-                </ul>
-            """, unsafe_allow_html=True)
-            st.markdown('<img src="https://media.tenor.com/1mi8BRdrVjwAAAAC/egg-protein.gif" width="300">', unsafe_allow_html=True)
-            show_food_recommendations()
+            # Menampilkan hasil perhitungan dengan Expander (Pop-up Style)
+            with st.expander("📊 Lihat Hasil Perhitungan Kebutuhan Protein Anda"):
+                st.success(f"🍗 Kebutuhan protein harian Anda untuk *{goal.lower()}* adalah sekitar *{total:.1f} gram* per hari! 😋")
+                st.markdown(f"""
+                    <ul>
+                    <li>Berat badan: {weight} kg</li>
+                    <li>Tinggi badan: {height} cm</li>
+                    <li>Kebutuhan dasar: {dasar:.1f} gram</li>
+                    <li>Penyesuaian karena tujuan: {tambahan:+.1f} gram</li>
+                    </ul>
+                """, unsafe_allow_html=True)
+                st.markdown('<img src="https://media.tenor.com/1mi8BRdrVjwAAAAC/egg-protein.gif" width="300">', unsafe_allow_html=True)
+                
+                # Menambahkan animasi suara ketika hasil muncul
+                st.audio("https://www.soundjay.com/button/beep-07.wav")  # suara Beep
+
+                show_food_recommendations()
 
     elif menu == 'Perkenalan Kelompok':
         st.subheader('👩‍🏫 Kelompok 5 (PMIP 1-E1)')
@@ -103,8 +113,8 @@ def main():
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
         st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
-        st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, tingkat aktivitas, dan tujuan. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
+        st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, tinggi badan, usia, jenis kelamin, tingkat aktivitas, dan tujuan. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
 
-# Jalankan
+# Jalankan aplikasi
 if __name__ == '__main__':
     main()
