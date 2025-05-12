@@ -83,7 +83,7 @@ def main():
         if st.button("✅ OK, Hitung Kebutuhan Protein"):
             total, dasar, tambahan = calculate_protein_requirement(weight, activity_level, gender, age, goal)
 
-            # Menampilkan hasil perhitungan dengan Expander (Pop-up Style)
+            # Menampilkan hasil perhitungan
             with st.expander("📊 Lihat Hasil Perhitungan Kebutuhan Protein Anda"):
                 st.success(f"🍗 Kebutuhan protein harian Anda untuk *{goal.lower()}* adalah sekitar *{total:.1f} gram* per hari! 😋")
                 st.markdown(f"""
@@ -94,10 +94,12 @@ def main():
                     <li>Penyesuaian karena tujuan: {tambahan:+.1f} gram</li>
                     </ul>
                 """, unsafe_allow_html=True)
-                st.markdown('<img src="https://media.tenor.com/1mi8BRdrVjwAAAAC/egg-protein.gif" width="300">', unsafe_allow_html=True)
-                
-                # Menambahkan animasi suara ketika hasil muncul
-                st.audio("https://www.soundjay.com/button/beep-07.wav")  # suara Beep
+
+                # Gambar alpukat lucu
+                st.image("/mnt/data/avocado.webp", width=300)
+
+                # Suara baru
+                st.audio("/mnt/data/cartoon-sfx-cheerful-wow-wah-cute-adorable-surprised-338343.mp3")
 
                 show_food_recommendations()
 
