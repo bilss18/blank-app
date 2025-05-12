@@ -116,7 +116,7 @@ def main():
 
                 # Tampilkan animasi dan audio
                 show_avocado_image("avocado.webp")
-                autoplay_audio("cartoon-sfx-cheerful-wow-wah-cute-adorable-surprised-338343.mp3")
+                autoplay_audio("snd_fragment_retrievewav-14728.mp3")
 
                 show_food_recommendations()
 
