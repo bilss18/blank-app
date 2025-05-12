@@ -76,13 +76,12 @@ def main():
         st.write('4. Sopian Darul Kamal (2420666) 🐿')
         st.write('5. Suci Rahma Safitri (2420668) 🦭')
 
-    elif menu == 'Tentang Aplikasi':
+     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
         import streamlit as st
-        st.title("Selamat Datang di Kalkulator Protein 🍔💪")
-        # Tampilkan animasi Patrick
-        st.image("foto_patrik.gif", caption="Patrick makan demi protein! 🍗", use_column_width=True)    
-        st.write("Yuk hitung kebutuhan proteinmu agar sekuat Patrick! 💥")
+        st.title("GIF Patrick Makan 🍔")
+        st.image("foto_patrik.gif", caption="Patrick lagi makan burger", use_column_width=True)
+        st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, dan tingkat aktivitas. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
 
 
 if __name__ == '__main__':
