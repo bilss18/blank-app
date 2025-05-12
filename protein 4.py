@@ -72,13 +72,13 @@ def main():
         st.write('📚 Anggota:')
         st.write('1. Chelsea Naila Darmayanti (2420581) 🐣')
         st.write('2. Fadliansyah (2420499) 🐈')
-        st.write('3. Nabila Kirania (2420629) 🦩')
+        st.write('3. Nabila Kirania Siti Saleha(2420629) 🦩')
         st.write('4. Sopian Darul Kamal (2420666) 🐿')
         st.write('5. Suci Rahma Safitri (2420668) 🦭')
 
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
-        st.markdown('<img src="https://media.tenor.com/1mi8BRdrVjwAAAAC/egg-protein.gif" width="500">', unsafe_allow_html=True)
+        st.markdown('<img src=https://images.app.goo.gl/GvvN9izQnXfpfTxa6">', unsafe_allow_html=True)
         st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, dan tingkat aktivitas. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
 
 if __name__ == '__main__':
