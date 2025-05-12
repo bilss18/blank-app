@@ -1,6 +1,6 @@
 import streamlit as st
 
-# Fungsi untuk menghitung kebutuhan protein
+# Fungsi menghitung kebutuhan protein
 def calculate_protein_requirement(weight, activity_level, gender, age, goal):
     multiplier = {
         'Sedentary (tidak aktif)': 0.8,
@@ -21,9 +21,10 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal):
         adjustment = 0.1
 
     base = weight * (multiplier[activity_level] + adjustment)
-    return base + (weight * goal_adjustment[goal])
+    total = base + (weight * goal_adjustment[goal])
+    return total
 
-# Fungsi rekomendasi makanan
+# Rekomendasi makanan tinggi protein
 def show_food_recommendations():
     st.markdown("🍽 **Rekomendasi Makanan Tinggi Protein:**")
     col1, col2 = st.columns(2)
@@ -45,8 +46,6 @@ def main():
         <style>
         .stApp {
             background-color: #C8A2C8;
-            background-size: cover;
-            color: #000000;
         }
         html, body, [class*="css"] {
             font-family: 'Comic Sans MS', cursive;
@@ -60,11 +59,10 @@ def main():
     # Menu samping
     menu = st.sidebar.selectbox("📋 Menu", ('Tentang Aplikasi', 'Kalkulator', 'Perkenalan Kelompok'))
 
-    # Menu Kalkulator
+    # Kalkulator
     if menu == 'Kalkulator':
         st.subheader('✨ Hitung Protein Harian Anda di sini!')
 
-        # Input data pengguna
         age = st.number_input('📅 Masukkan umur Anda (tahun):', min_value=1, step=1)
         gender = st.selectbox('🚻 Pilih jenis kelamin Anda:', ['Laki-laki', 'Perempuan'])
         weight = st.number_input('⚖ Masukkan berat badan Anda (kg):', min_value=1.0, step=0.1)
@@ -74,8 +72,8 @@ def main():
             'Active (sangat aktif)'
         ])
         goal = st.selectbox('🎯 Apa tujuan Anda?', [
-            'Menurunkan berat badan', 
-            'Mempertahankan berat badan', 
+            'Menurunkan berat badan',
+            'Mempertahankan berat badan',
             'Meningkatkan massa otot'
         ])
 
@@ -85,7 +83,6 @@ def main():
             st.markdown('<img src="https://media.tenor.com/1mi8BRdrVjwAAAAC/egg-protein.gif" width="300">', unsafe_allow_html=True)
             show_food_recommendations()
 
-    # Menu Perkenalan
     elif menu == 'Perkenalan Kelompok':
         st.subheader('👩‍🏫 Kelompok 5 (PMIP 1-E1)')
         st.write('📚 Anggota:')
@@ -95,12 +92,14 @@ def main():
         st.write('4. Sopian Darul Kamal (2420666) 🐿')
         st.write('5. Suci Rahma Safitri (2420668) 🦭')
 
-    # Menu Tentang Aplikasi
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
         st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
-        st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, aktivitas, dan tujuan kesehatan. Cocok digunakan oleh siapa saja yang ingin menurunkan berat badan, menjaga kondisi, atau meningkatkan massa otot 💪🍱.")
+        st.write("""
+        Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, tingkat aktivitas, 
+        dan tujuan: apakah ingin menurunkan berat badan, mempertahankan kondisi, atau meningkatkan massa otot 💪🍱.
+        """)
 
-# Jalankan
+# Jalankan aplikasi
 if __name__ == '__main__':
     main()
