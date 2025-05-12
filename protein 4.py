@@ -74,7 +74,7 @@ def main():
 
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
-        st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_column_width=True)
+        st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
         st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, usia, jenis kelamin, dan tingkat aktivitas. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
 
 if __name__ == '__main__':
