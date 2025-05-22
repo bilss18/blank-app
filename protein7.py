@@ -1,13 +1,11 @@
 import streamlit as st
 import base64
 
-# Encode gambar background dari file lokal
 def get_base64_bg_image(file_path):
     with open(file_path, "rb") as f:
         data = f.read()
         return base64.b64encode(data).decode()
 
-# Fungsi untuk menampilkan audio autoplay
 def autoplay_audio(file_path: str):
     with open(file_path, "rb") as f:
         data = f.read()
@@ -19,7 +17,6 @@ def autoplay_audio(file_path: str):
         """
         st.markdown(md, unsafe_allow_html=True)
 
-# Kalkulasi kebutuhan protein
 def calculate_protein_requirement(weight, activity_level, gender, age, goal, medical_condition):
     multiplier = {
         'Sedentary (tidak aktif)': 0.8,
@@ -53,7 +50,6 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal, med
     total = dasar + tambahan
     return total, dasar, tambahan
 
-# Rekomendasi makanan
 def show_food_recommendations():
     st.markdown("🍽 *Rekomendasi Makanan Lokal Tinggi Protein:*")
     col1, col2 = st.columns(2)
@@ -66,7 +62,6 @@ def show_food_recommendations():
         st.markdown("- 🌱 Tempe — 19g/100g")
         st.markdown("- 🌰 Kacang tanah — 26g/100g")
 
-# Simulasi piring
 def show_protein_plate():
     st.markdown("🍽 **Simulasi Piring Protein Anda**")
     st.markdown("""
@@ -75,14 +70,12 @@ def show_protein_plate():
     - 1/3: Sayuran hijau  
     """)
 
-# Fungsi utama
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
 
-    # Ambil gambar latar belakang (dari file "gambar protein.jpg")
     b64_image = get_base64_bg_image("gambar protein.jpg")
 
-    # CSS: background + style tombol oranye
+    # CSS umum
     st.markdown(f"""
         <style>
         .stApp {{
@@ -98,25 +91,6 @@ def main():
         h1, h2, h3, h4, h5, h6, p {{
             color: white !important;
         }}
-        .css-1offfwp {{
-            background-color: rgba(0, 0, 0, 0.5) !important;
-        }}
-        section[data-testid="stSidebar"] .stSelectbox > div {{
-            background-color: black !important;
-            color: white !important;
-            border-radius: 8px;
-        }}
-        section[data-testid="stSidebar"] label[for^="Menu"]::after {{
-            content: "Menu";
-            font-weight: bold;
-            color: white;
-            margin-left: 10px;
-        }}
-        section[data-testid="stSidebar"] .stSelectbox > div::after {{
-            display: none !important;
-        }}
-
-        /* Tombol oranye */
         div.stButton > button:first-child {{
             background-color: orange;
             color: white;
@@ -125,7 +99,9 @@ def main():
         }}
         div.stButton > button:first-child:hover {{
             background-color: darkorange;
-            color: white;
+        }}
+        section[data-testid="stSidebar"] * {{
+            color: black !important;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -188,6 +164,18 @@ def main():
             show_protein_plate()
 
     elif menu == 'Perkenalan Kelompok':
+        # Tambahkan latar belakang khusus biru tua
+        st.markdown("""
+            <style>
+            .perkenalan-section {
+                background-color: #001f3f;
+                padding: 20px;
+                border-radius: 10px;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<div class="perkenalan-section">', unsafe_allow_html=True)
         st.subheader('👩‍🏫 Kelompok 5 (PMIP 1-E1)')
         st.write('📚 Anggota:')
         st.write('1. Chelsea Naila Darmayanti (2420581) 🐣')
@@ -195,8 +183,10 @@ def main():
         st.write('3. Nabila Kirania Siti Saleha (2420629) 🦩')
         st.write('4. Sopian Darul Kamal (2420666) 🐿')
         st.write('5. Suci Rahma Safitri (2420668) 🦭')
+        st.markdown('</div>', unsafe_allow_html=True)
 
-       
+        st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
+
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
         st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
