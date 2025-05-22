@@ -1,7 +1,9 @@
 import streamlit as st
 import base64
+import matplotlib.pyplot as plt
+import pandas as pd
 
-# Fungsi untuk encode audio dan tampilkan autoplay
+# Fungsi encode dan autoplay audio
 def autoplay_audio(file_path: str):
     with open(file_path, "rb") as f:
         data = f.read()
@@ -13,7 +15,7 @@ def autoplay_audio(file_path: str):
         """
         st.markdown(md, unsafe_allow_html=True)
 
-# Fungsi menampilkan gambar avocado
+# Fungsi tampilkan gambar avocado
 def show_avocado_image(file_path: str):
     with open(file_path, "rb") as f:
         data = f.read()
@@ -23,8 +25,8 @@ def show_avocado_image(file_path: str):
         """
         st.markdown(md, unsafe_allow_html=True)
 
-# Fungsi perhitungan protein
-def calculate_protein_requirement(weight, activity_level, gender, age, goal):
+# Hitung kebutuhan protein harian
+def calculate_protein_requirement(weight, activity_level, gender, age, goal, medical_condition):
     multiplier = {
         'Sedentary (tidak aktif)': 0.8,
         'Moderate (cukup aktif)': 1.2,
@@ -40,70 +42,96 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal):
     goal_adj = {
         'Menurunkan berat badan': -0.1,
         'Mempertahankan berat badan': 0,
-        'Meningkatkan massa otot': 0.2
+        'Meningkatkan massa otot': 0.2,
+        'Menambah berat badan': 0.15
+    }
+
+    medical_adj = {
+        'Tidak ada': 0,
+        'Hamil (Trimester 1)': 0.1,
+        'Hamil (Trimester 2)': 0.2,
+        'Hamil (Trimester 3)': 0.3,
+        'Penyakit ginjal ringan': -0.2,
+        'Diabetes tipe 2': -0.1,
+        'Hipertensi': -0.05,
+        'Luka pasca operasi': 0.2,
+        'Malnutrisi': 0.25
     }
 
     dasar = weight * (multiplier[activity_level] + gender_age_adj)
-    tambahan = weight * goal_adj[goal]
-    total = dasar + tambahan
+    tambahan_goal = weight * goal_adj[goal]
+    tambahan_medical = weight * medical_adj[medical_condition]
+    total = dasar + tambahan_goal + tambahan_medical
 
-    return total, dasar, tambahan
+    return total, dasar, tambahan_goal, tambahan_medical
 
-# Rekomendasi makanan
+# Rekomendasi makanan lokal
+food_list = {
+    "Tempe (100g)": (19, "Sumber protein nabati tinggi, murah dan mudah didapat."),
+    "Telur rebus (1 butir)": (6, "Protein hewani cepat saji dan padat gizi."),
+    "Ikan lele goreng (100g)": (20, "Kaya omega-3 dan protein tinggi."),
+    "Dada ayam rebus (100g)": (31, "Protein tinggi, rendah lemak."),
+    "Susu kedelai (1 gelas)": (7, "Sumber protein cair nabati."),
+    "Tahu putih (100g)": (10, "Serbaguna untuk berbagai masakan.")
+}
+
 def show_food_recommendations():
-    st.markdown("🍽 **Rekomendasi Makanan Tinggi Protein:**")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("- 🥩 Daging ayam tanpa kulit")
-        st.markdown("- 🐟 Ikan salmon atau tuna")
-        st.markdown("- 🥚 Telur rebus")
-    with col2:
-        st.markdown("- 🧀 Tahu / Tempe")
-        st.markdown("- 🥛 Susu rendah lemak / greek yogurt")
-        st.markdown("- 🥜 Kacang almond / edamame")
+    st.markdown("🍽 **Rekomendasi Makanan Lokal Tinggi Protein:**")
+    for name, (protein, note) in food_list.items():
+        st.markdown(f"- **{name}**: {protein}g protein — _{note}_")
 
-# Fungsi utama
+# Plot grafik kebutuhan protein
+def plot_protein_chart(dasar, tambahan_goal, tambahan_condition):
+    labels = ['Dasar', 'Tujuan', 'Kondisi Medis']
+    values = [dasar, tambahan_goal, tambahan_condition]
+    fig, ax = plt.subplots()
+    ax.bar(labels, values, color=['skyblue', 'orange', 'lightgreen'])
+    ax.set_ylabel("Gram Protein")
+    ax.set_title("Komponen Kebutuhan Protein Harian")
+    st.pyplot(fig)
+
+# Ekspor hasil ke Excel
+def export_result_to_excel(total, dasar, tambahan_goal, tambahan_condition):
+    data = {
+        "Komponen": ["Dasar", "Tujuan", "Kondisi Medis", "Total"],
+        "Protein (gram)": [dasar, tambahan_goal, tambahan_condition, total]
+    }
+    df = pd.DataFrame(data)
+    df.to_excel("hasil_protein.xlsx", index=False)
+    with open("hasil_protein.xlsx", "rb") as file:
+        st.download_button("📥 Unduh hasil ke Excel", file, file_name="hasil_protein.xlsx")
+
+# Fungsi utama Streamlit
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
-
-    # CSS disederhanakan untuk warna font hitam & styling dasar
     st.markdown("""
         <style>
-        .stApp, html, body {
-            background-color: #E6CCF5;
-            font-family: 'Comic Sans MS', cursive;
-            color: black !important;
-        }
-        label, .stSidebar, .css-1v3fvcr, .css-1d391kg {
-            color: black !important;
-        }
+        .stApp {background-color: #E6CCF5; font-family: 'Comic Sans MS'; color: black;}
+        div.stButton > button:first-child {background-color: #FFA500; color: white;}
         </style>
     """, unsafe_allow_html=True)
 
     st.title('🍳 Kalkulator Kebutuhan Protein Harian 😸')
-
     menu = st.sidebar.selectbox("📋 Menu", ('Tentang Aplikasi', 'Kalkulator', 'Perkenalan Kelompok'))
 
     if menu == 'Kalkulator':
         st.subheader('✨ Hitung Protein Harian Anda di sini!')
-
         age = st.number_input('📅 Masukkan umur Anda (tahun):', min_value=1, step=1)
         gender = st.selectbox('🚻 Pilih jenis kelamin Anda:', ['Laki-laki', 'Perempuan'])
         height = st.number_input('📏 Masukkan tinggi badan Anda (cm):', min_value=50, step=1)
         weight = st.number_input('⚖ Masukkan berat badan Anda (kg):', min_value=1.0, step=0.1)
         activity_level = st.selectbox('🏃‍♀ Pilih tingkat aktivitas Anda:', [
-            'Sedentary (tidak aktif)', 
-            'Moderate (cukup aktif)', 
-            'Active (sangat aktif)'
-        ])
+            'Sedentary (tidak aktif)', 'Moderate (cukup aktif)', 'Active (sangat aktif)'])
         goal = st.selectbox('🎯 Apa tujuan Anda?', [
-            'Menurunkan berat badan', 
-            'Mempertahankan berat badan', 
-            'Meningkatkan massa otot'
-        ])
+            'Menurunkan berat badan', 'Mempertahankan berat badan', 'Meningkatkan massa otot', 'Menambah berat badan'])
+        medical_condition = st.selectbox('🩺 Kondisi Medis (jika ada):', [
+            'Tidak ada', 'Hamil (Trimester 1)', 'Hamil (Trimester 2)', 'Hamil (Trimester 3)',
+            'Penyakit ginjal ringan', 'Diabetes tipe 2', 'Hipertensi', 'Luka pasca operasi', 'Malnutrisi'])
 
         if st.button("✅ OK, Hitung Kebutuhan Protein"):
-            total, dasar, tambahan = calculate_protein_requirement(weight, activity_level, gender, age, goal)
+            total, dasar, tambahan_goal, tambahan_condition = calculate_protein_requirement(
+                weight, activity_level, gender, age, goal, medical_condition
+            )
 
             with st.expander("📊 Lihat Hasil Perhitungan Kebutuhan Protein Anda"):
                 st.success(f"🍗 Kebutuhan protein harian Anda untuk *{goal.lower()}* adalah sekitar *{total:.1f} gram* per hari! 😋")
@@ -112,9 +140,13 @@ def main():
                     <li>Berat badan: {weight} kg</li>
                     <li>Tinggi badan: {height} cm</li>
                     <li>Kebutuhan dasar: {dasar:.1f} gram</li>
-                    <li>Penyesuaian karena tujuan: {tambahan:+.1f} gram</li>
+                    <li>Penyesuaian karena tujuan: {tambahan_goal:+.1f} gram</li>
+                    <li>Penyesuaian medis: {tambahan_condition:+.1f} gram</li>
                     </ul>
                 """, unsafe_allow_html=True)
+
+                plot_protein_chart(dasar, tambahan_goal, tambahan_condition)
+                export_result_to_excel(total, dasar, tambahan_goal, tambahan_condition)
 
                 show_avocado_image("avocado.webp")
                 autoplay_audio("snd_fragment_retrievewav-14728.mp3")
@@ -132,7 +164,7 @@ def main():
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
         st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
-        st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, tinggi badan, usia, jenis kelamin, tingkat aktivitas, dan tujuan. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
+        st.write("Aplikasi ini membantu menghitung kebutuhan protein harian berdasarkan berat, tinggi, usia, jenis kelamin, aktivitas, tujuan, dan kondisi medis. Cocok untuk menjaga pola makan sehat 💪🍱.")
 
 if __name__ == '__main__':
     main()
