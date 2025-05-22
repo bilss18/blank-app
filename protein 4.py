@@ -1,43 +1,12 @@
 import streamlit as st
-import base64
-import pandas as pd
 
-# Fungsi encode dan autoplay audio
-def autoplay_audio(file_path: str):
-    try:
-        with open(file_path, "rb") as f:
-            data = f.read()
-            b64 = base64.b64encode(data).decode()
-            md = f"""
-                <audio autoplay>
-                <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-                </audio>
-            """
-            st.markdown(md, unsafe_allow_html=True)
-    except:
-        st.warning("Audio file tidak ditemukan atau gagal diputar.")
-
-# Fungsi tampilkan gambar avocado
-def show_avocado_image(file_path: str):
-    try:
-        with open(file_path, "rb") as f:
-            data = f.read()
-            b64 = base64.b64encode(data).decode()
-            md = f"""
-                <img src="data:image/webp;base64,{b64}" width="300">
-            """
-            st.markdown(md, unsafe_allow_html=True)
-    except:
-        st.warning("Gambar tidak ditemukan.")
-
-# Hitung kebutuhan protein harian
+# Hitung kebutuhan protein
 def calculate_protein_requirement(weight, activity_level, gender, age, goal, medical_condition):
     multiplier = {
-        'Sedentary (tidak aktif)': 1.0,
-        'Moderate (cukup aktif)': 1.3,
+        'Sedentary (tidak aktif)': 0.8,
+        'Moderate (cukup aktif)': 1.2,
         'Active (sangat aktif)': 1.6
     }
-
     gender_age_adj = 0
     if gender == 'Perempuan' and age >= 60:
         gender_age_adj = -0.1
@@ -45,9 +14,9 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal, med
         gender_age_adj = 0.1
 
     goal_adj = {
-        'Menurunkan berat badan': -0.05,
+        'Menurunkan berat badan': -0.1,
         'Mempertahankan berat badan': 0,
-        'Meningkatkan massa otot': 0.3,
+        'Meningkatkan massa otot': 0.2,
         'Menambah berat badan': 0.25
     }
 
@@ -57,8 +26,8 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal, med
         'Hamil (Trimester 2)': 0.2,
         'Hamil (Trimester 3)': 0.25,
         'Penyakit ginjal ringan': -0.15,
-        'Diabetes tipe 2': 0.0,
-        'Hipertensi': 0.0,
+        'Diabetes tipe 2': 0,
+        'Hipertensi': 0,
         'Luka pasca operasi': 0.3,
         'Malnutrisi': 0.4
     }
@@ -67,10 +36,9 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal, med
     tambahan_goal = weight * goal_adj[goal]
     tambahan_medical = weight * medical_adj[medical_condition]
     total = dasar + tambahan_goal + tambahan_medical
-
     return total, dasar, tambahan_goal, tambahan_medical
 
-# Rekomendasi makanan lokal
+# Rekomendasi makanan lokal protein tinggi
 food_list = {
     "Tempe (100g)": (19, "Sumber protein nabati tinggi, murah dan mudah didapat."),
     "Telur rebus (1 butir)": (6, "Protein hewani cepat saji dan padat gizi."),
@@ -85,70 +53,99 @@ def show_food_recommendations():
     for name, (protein, note) in food_list.items():
         st.markdown(f"- **{name}**: {protein}g protein — _{note}_")
 
-# Simulasi piring protein tanpa grafik
+# Simulasi piring protein sederhana
 def show_protein_plate_simulation(target_protein):
     st.markdown("🍱 **Simulasi Piring Protein:**")
     remaining = target_protein
+    selected = []
     for name, (protein, _) in food_list.items():
         if remaining <= 0:
             break
-        # Hitung porsi yang kira-kira bisa penuhi protein
         porsi = int(remaining // protein)
         if porsi > 0:
-            st.write(f"- {porsi}x {name} → {protein * porsi:.1f}g protein")
+            selected.append((porsi, name, protein * porsi))
             remaining -= protein * porsi
 
-    if remaining > 0:
-        st.write(f"🔹 Sisa protein sekitar {remaining:.1f}g, bisa ditambah camilan tinggi protein seperti susu atau kacang.")
+    for porsi, name, total_protein in selected:
+        st.markdown(f"- {porsi} porsi **{name}** → {total_protein:.1f}g protein")
 
-# Fungsi utama Streamlit
+    if remaining > 0:
+        st.markdown(f"🔹 Sisa kebutuhan protein sekitar {remaining:.1f}g bisa dilengkapi camilan protein tinggi.")
+
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
+
     st.markdown("""
-        <style>
-        .stApp {background-color: #E6CCF5; font-family: 'Comic Sans MS'; color: black;}
-        div.stButton > button:first-child {background-color: #FFA500; color: white;}
-        </style>
+    <style>
+    .stApp {
+        background-color: #E6CCF5;
+        font-family: 'Comic Sans MS', cursive;
+        color: black;
+    }
+    div.stButton > button:first-child {
+        background-color: #FFA500;
+        color: white;
+        font-weight: bold;
+    }
+    </style>
     """, unsafe_allow_html=True)
 
     st.title('🍳 Kalkulator Kebutuhan Protein Harian 😸')
+
     menu = st.sidebar.selectbox("📋 Menu", ('Tentang Aplikasi', 'Kalkulator', 'Perkenalan Kelompok'))
 
     if menu == 'Kalkulator':
         st.subheader('✨ Hitung Protein Harian Anda di sini!')
+
         age = st.number_input('📅 Masukkan umur Anda (tahun):', min_value=1, step=1)
         gender = st.selectbox('🚻 Pilih jenis kelamin Anda:', ['Laki-laki', 'Perempuan'])
         height = st.number_input('📏 Masukkan tinggi badan Anda (cm):', min_value=50, step=1)
         weight = st.number_input('⚖ Masukkan berat badan Anda (kg):', min_value=1.0, step=0.1)
         activity_level = st.selectbox('🏃‍♀ Pilih tingkat aktivitas Anda:', [
-            'Sedentary (tidak aktif)', 'Moderate (cukup aktif)', 'Active (sangat aktif)'])
+            'Sedentary (tidak aktif)',
+            'Moderate (cukup aktif)',
+            'Active (sangat aktif)'
+        ])
         goal = st.selectbox('🎯 Apa tujuan Anda?', [
-            'Menurunkan berat badan', 'Mempertahankan berat badan', 'Meningkatkan massa otot', 'Menambah berat badan'])
+            'Menurunkan berat badan',
+            'Mempertahankan berat badan',
+            'Meningkatkan massa otot',
+            'Menambah berat badan'
+        ])
         medical_condition = st.selectbox('🩺 Kondisi Medis (jika ada):', [
-            'Tidak ada', 'Hamil (Trimester 1)', 'Hamil (Trimester 2)', 'Hamil (Trimester 3)',
-            'Penyakit ginjal ringan', 'Diabetes tipe 2', 'Hipertensi', 'Luka pasca operasi', 'Malnutrisi'])
+            'Tidak ada',
+            'Hamil (Trimester 1)',
+            'Hamil (Trimester 2)',
+            'Hamil (Trimester 3)',
+            'Penyakit ginjal ringan',
+            'Diabetes tipe 2',
+            'Hipertensi',
+            'Luka pasca operasi',
+            'Malnutrisi'
+        ])
 
         if st.button("✅ OK, Hitung Kebutuhan Protein"):
-            total, dasar, tambahan_goal, tambahan_condition = calculate_protein_requirement(
+            total, dasar, tambahan_goal, tambahan_medical = calculate_protein_requirement(
                 weight, activity_level, gender, age, goal, medical_condition
             )
-
             with st.expander("📊 Lihat Hasil Perhitungan Kebutuhan Protein Anda"):
                 st.success(f"🍗 Kebutuhan protein harian Anda untuk *{goal.lower()}* adalah sekitar *{total:.1f} gram* per hari! 😋")
                 st.markdown(f"""
-                    <ul>
-                    <li>Berat badan: {weight} kg</li>
-                    <li>Tinggi badan: {height} cm</li>
-                    <li>Kebutuhan dasar: {dasar:.1f} gram</li>
-                    <li>Penyesuaian karena tujuan: {tambahan_goal:+.1f} gram</li>
-                    <li>Penyesuaian medis: {tambahan_condition:+.1f} gram</li>
-                    </ul>
+                <ul>
+                <li>Berat badan: {weight} kg</li>
+                <li>Tinggi badan: {height} cm</li>
+                <li>Kebutuhan dasar: {dasar:.1f} gram</li>
+                <li>Penyesuaian karena tujuan: {tambahan_goal:+.1f} gram</li>
+                <li>Penyesuaian kondisi medis: {tambahan_medical:+.1f} gram</li>
+                </ul>
                 """, unsafe_allow_html=True)
 
-                show_avocado_image("avocado.webp")
-                autoplay_audio("snd_fragment_retrievewav-14728.mp3")
                 show_food_recommendations()
                 show_protein_plate_simulation(total)
+
+        # Tampilkan gambar & audio lokal (pastikan file ada di folder yang sama)
+        st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_column_width=True)
+        st.audio("snd_fragment_retrievewav-14728.mp3")
 
     elif menu == 'Perkenalan Kelompok':
         st.subheader('👩‍🏫 Kelompok 5 (PMIP 1-E1)')
@@ -161,7 +158,7 @@ def main():
 
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
-        st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
+        st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_column_width=True)
         st.write("Aplikasi ini membantu menghitung kebutuhan protein harian berdasarkan berat, tinggi, usia, jenis kelamin, aktivitas, tujuan, dan kondisi medis. Cocok untuk menjaga pola makan sehat 💪🍱.")
 
 if __name__ == '__main__':
