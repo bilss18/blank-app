@@ -1,7 +1,7 @@
 import streamlit as st
 import base64
 
-# Fungsi untuk encode audio dan tampilkan autoplay
+# Fungsi untuk encode dan autoplay audio
 def autoplay_audio(file_path: str):
     with open(file_path, "rb") as f:
         data = f.read()
@@ -73,7 +73,7 @@ def show_food_recommendations():
         st.markdown("- 🌱 Tempe — 19g protein per 100g")
         st.markdown("- 🌰 Kacang tanah — 26g protein per 100g")
 
-# Simulasi piring protein (makanan lokal sederhana)
+# Simulasi piring protein
 def show_protein_plate():
     st.markdown("🍽 **Simulasi Piring Protein Anda**")
     st.markdown("""
@@ -163,6 +163,7 @@ def main():
 
             show_avocado_image("avocado.webp")
             autoplay_audio("snd_fragment_retrievewav-14728.mp3")
+
             show_food_recommendations()
             show_protein_plate()
 
