@@ -75,6 +75,10 @@ def show_protein_plate_simulation(target_protein):
     if remaining > 0:
         st.markdown(f"🔹 Sisa {remaining:.1f}g protein, bisa dilengkapi dengan camilan tinggi protein seperti susu atau kacang.")
 
+# Fungsi tampilkan gambar avocado.webp
+def show_avocado_image():
+    st.image("avocado.webp", width=300)
+
 # Main app
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
@@ -121,17 +125,14 @@ def main():
                 </ul>
             """, unsafe_allow_html=True)
 
+            show_avocado_image()
             show_food_recommendations()
             show_protein_plate_simulation(total)
 
-            # Tampilkan gif
-            st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
-
-            # Play audio otomatis
-            audio_file = open("snd_fragment_retrievewav-14728.mp3", "rb")
-            audio_bytes = audio_file.read()
-            st.audio(audio_bytes, format='audio/mp3', start_time=0)
-            audio_file.close()
+            # Play audio otomatis dari file mp3 lokal
+            with open("snd_fragment_retrievewav-14728.mp3", "rb") as audio_file:
+                audio_bytes = audio_file.read()
+                st.audio(audio_bytes, format="audio/mp3", start_time=0)
 
     elif menu == 'Perkenalan Kelompok':
         st.subheader('👩‍🏫 Kelompok 5 (PMIP 1-E1)')
