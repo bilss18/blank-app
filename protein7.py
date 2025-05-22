@@ -82,7 +82,7 @@ def main():
     # Ambil gambar latar belakang (dari file "gambar protein.jpg")
     b64_image = get_base64_bg_image("gambar protein.jpg")
 
-    # CSS untuk background gambar + sidebar styling
+    # CSS: background + style tombol oranye
     st.markdown(f"""
         <style>
         .stApp {{
@@ -114,6 +114,18 @@ def main():
         }}
         section[data-testid="stSidebar"] .stSelectbox > div::after {{
             display: none !important;
+        }}
+
+        /* Tombol oranye */
+        div.stButton > button:first-child {{
+            background-color: orange;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+        }}
+        div.stButton > button:first-child:hover {{
+            background-color: darkorange;
+            color: white;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -184,8 +196,7 @@ def main():
         st.write('4. Sopian Darul Kamal (2420666) 🐿')
         st.write('5. Suci Rahma Safitri (2420668) 🦭')
 
-        st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
-
+       
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
         st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
