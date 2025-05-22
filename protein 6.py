@@ -1,18 +1,27 @@
 import streamlit as st
 import base64
 
-# Fungsi menampilkan gambar avocado gif
+# Fungsi untuk encode audio dan tampilkan autoplay
+def autoplay_audio(file_path: str):
+    with open(file_path, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        md = f"""
+            <audio autoplay>
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            </audio>
+        """
+        st.markdown(md, unsafe_allow_html=True)
+
+# Fungsi menampilkan gambar avocado
 def show_avocado_image(file_path: str):
-    try:
-        with open(file_path, "rb") as f:
-            data = f.read()
-            b64 = base64.b64encode(data).decode()
-            md = f"""
-                <img src="data:image/gif;base64,{b64}" width="300" />
-            """
-            st.markdown(md, unsafe_allow_html=True)
-    except Exception as e:
-        st.error(f"Gagal memuat gambar: {e}")
+    with open(file_path, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        md = f"""
+            <img src="data:image/webp;base64,{b64}" width="300">
+        """
+        st.markdown(md, unsafe_allow_html=True)
 
 # Fungsi hitung kebutuhan protein harian
 def calculate_protein_requirement(weight, activity_level, gender, age, goal, medical_condition):
@@ -73,6 +82,7 @@ def show_protein_plate():
     - 1/3 piring: Sayuran hijau  
     """)
 
+# Fungsi utama aplikasi
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
 
@@ -86,11 +96,10 @@ def main():
         label, .stSidebar, .css-1v3fvcr, .css-1d391kg {
             color: black !important;
         }
-        /* Warna tombol hitung oranye */
-        div.stButton > button:first-child {
-            background-color: orange;
-            color: black;
-            font-weight: bold;
+        button[kind="primary"] {
+            background-color: orange !important;
+            color: black !important;
+            font-weight: bold !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -152,7 +161,8 @@ def main():
                 </ul>
             """, unsafe_allow_html=True)
 
-            show_avocado_image("avocado.gif")
+            show_avocado_image("avocado.webp")
+            autoplay_audio("snd_fragment_retrievewav-14728.mp3")
             show_food_recommendations()
             show_protein_plate()
 
@@ -167,6 +177,7 @@ def main():
 
     elif menu == 'Tentang Aplikasi':
         st.subheader('🌈 Tentang Aplikasi')
+        st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
         st.write("Aplikasi ini membantu pengguna menghitung kebutuhan protein harian berdasarkan berat badan, tinggi badan, usia, jenis kelamin, tingkat aktivitas, tujuan, dan kondisi medis. Cocok digunakan oleh siapa saja yang ingin menjaga pola makan sehat 💪🍱.")
 
 if __name__ == '__main__':
