@@ -65,41 +65,50 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal, med
 
     return total, dasar, tambahan_goal, tambahan_medical
 
-# Rekomendasi makanan lokal
+# Data makanan lokal dengan info gizi: (protein, kalori, lemak, karbohidrat, keterangan)
 food_list = {
-    "Tempe (100g)": (19, "Sumber protein nabati tinggi, murah dan mudah didapat."),
-    "Telur rebus (1 butir)": (6, "Protein hewani cepat saji dan padat gizi."),
-    "Ikan lele goreng (100g)": (20, "Kaya omega-3 dan protein tinggi."),
-    "Dada ayam rebus (100g)": (31, "Protein tinggi, rendah lemak."),
-    "Susu kedelai (1 gelas)": (7, "Sumber protein cair nabati."),
-    "Tahu putih (100g)": (10, "Serbaguna untuk berbagai masakan.")
+    "Tempe (100g)": (19, 192, 11, 7, "Sumber protein nabati tinggi, murah dan mudah didapat."),
+    "Telur rebus (1 butir)": (6, 78, 5, 1, "Protein hewani cepat saji dan padat gizi."),
+    "Ikan lele goreng (100g)": (20, 180, 10, 0, "Kaya omega-3 dan protein tinggi."),
+    "Dada ayam rebus (100g)": (31, 165, 3.6, 0, "Protein tinggi, rendah lemak."),
+    "Susu kedelai (1 gelas)": (7, 100, 4, 8, "Sumber protein cair nabati."),
+    "Tahu putih (100g)": (10, 76, 4.8, 1.9, "Serbaguna untuk berbagai masakan.")
 }
 
 def show_food_recommendations():
     st.markdown("🍽 **Rekomendasi Makanan Lokal Tinggi Protein:**")
-    for name, (protein, note) in food_list.items():
-        st.markdown(f"- **{name}**: {protein}g protein — _{note}_")
+    for name, (protein, kalori, lemak, karbo, note) in food_list.items():
+        st.markdown(f"""
+        - **{name}**: {protein}g protein  
+          📝 _{note}_  
+          📊 Kalori: {kalori} kcal, Lemak: {lemak}g, Karbohidrat: {karbo}g
+        """)
 
-# Simulasi piring protein
+# Simulasi piring protein lengkap kalori
 def show_protein_plate_simulation(target_protein):
     st.markdown("🍱 **Simulasi Piring Protein:**")
-    options = list(food_list.items())
     selected = []
     remaining = target_protein
+    total_kalori = 0
 
-    for name, (protein, _) in options:
+    for name, (protein, kalori, _, _, _) in food_list.items():
         if remaining <= 0:
             break
         qty = int(remaining // protein)
         if qty > 0:
-            selected.append((qty, name, protein * qty))
-            remaining -= protein * qty
+            total_protein = qty * protein
+            total_kal = qty * kalori
+            selected.append((qty, name, total_protein, total_kal))
+            total_kalori += total_kal
+            remaining -= total_protein
 
-    for qty, name, total_protein in selected:
-        st.markdown(f"- {qty}x **{name}** → {total_protein:.1f}g protein")
+    for qty, name, total_protein, total_kal in selected:
+        st.markdown(f"- {qty}x **{name}** → {total_protein:.1f}g protein, {total_kal} kcal")
 
     if remaining > 0:
         st.markdown(f"🔹 Sisa {remaining:.1f}g protein, bisa dilengkapi dengan camilan tinggi protein seperti susu atau kacang.")
+
+    st.markdown(f"🔥 **Total estimasi kalori dari piring ini: {total_kalori} kcal**")
 
 # Plot grafik kebutuhan protein
 def plot_protein_chart(dasar, tambahan_goal, tambahan_condition):
@@ -160,33 +169,37 @@ def main():
                     <ul>
                     <li>Berat badan: {weight} kg</li>
                     <li>Tinggi badan: {height} cm</li>
-                    <li>Kebutuhan dasar: {dasar:.1f} gram</li>
-                    <li>Penyesuaian karena tujuan: {tambahan_goal:+.1f} gram</li>
-                    <li>Penyesuaian medis: {tambahan_condition:+.1f} gram</li>
+                    <li>Usia: {age} tahun</li>
+                    <li>Jenis kelamin: {gender}</li>
+                    <li>Tingkat aktivitas: {activity_level}</li>
+                    <li>Kondisi medis: {medical_condition}</li>
                     </ul>
                 """, unsafe_allow_html=True)
-
                 plot_protein_chart(dasar, tambahan_goal, tambahan_condition)
-                export_result_to_excel(total, dasar, tambahan_goal, tambahan_condition)
-
-                show_avocado_image("avocado.webp")
-                autoplay_audio("snd_fragment_retrievewav-14728.mp3")
                 show_food_recommendations()
                 show_protein_plate_simulation(total)
-
-    elif menu == 'Perkenalan Kelompok':
-        st.subheader('👩‍🏫 Kelompok 5 (PMIP 1-E1)')
-        st.write('📚 Anggota:')
-        st.write('1. Chelsea Naila Darmayanti (2420581) 🐣')
-        st.write('2. Fadliansyah (2420499) 🐈')
-        st.write('3. Nabila Kirania Siti Saleha (2420629) 🦩')
-        st.write('4. Sopian Darul Kamal (2420666) 🐿')
-        st.write('5. Suci Rahma Safitri (2420668) 🦭')
+                export_result_to_excel(total, dasar, tambahan_goal, tambahan_condition)
 
     elif menu == 'Tentang Aplikasi':
-        st.subheader('🌈 Tentang Aplikasi')
-        st.image("foto patrik.gif", caption="Patrick makan demi protein!", use_container_width=True)
-        st.write("Aplikasi ini membantu menghitung kebutuhan protein harian berdasarkan berat, tinggi, usia, jenis kelamin, aktivitas, tujuan, dan kondisi medis. Cocok untuk menjaga pola makan sehat 💪🍱.")
+        st.header("Tentang Aplikasi")
+        st.markdown("""
+            Aplikasi ini membantu menghitung kebutuhan protein harian Anda berdasarkan berat badan,
+            usia, jenis kelamin, aktivitas, tujuan, dan kondisi medis khusus.
+            
+            Dibuat dengan Streamlit dan Python.
+        """)
+        show_avocado_image("avocado.webp")
+        autoplay_audio("tap.mp3")
+
+    else:
+        st.header("Perkenalan Kelompok")
+        st.markdown("""
+            **Kelompok 6**  
+            - Anggota 1  
+            - Anggota 2  
+            - Anggota 3  
+            - Anggota 4  
+        """)
 
 if __name__ == '__main__':
     main()
