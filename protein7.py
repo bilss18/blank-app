@@ -82,7 +82,7 @@ def main():
     # Ambil gambar latar belakang (dari file "gambar protein.jpg")
     b64_image = get_base64_bg_image("gambar protein.jpg")
 
-    # CSS untuk background gambar
+    # CSS untuk background gambar + sidebar styling
     st.markdown(f"""
         <style>
         .stApp {{
@@ -100,6 +100,20 @@ def main():
         }}
         .css-1offfwp {{
             background-color: rgba(0, 0, 0, 0.5) !important;
+        }}
+        section[data-testid="stSidebar"] .stSelectbox > div {{
+            background-color: black !important;
+            color: white !important;
+            border-radius: 8px;
+        }}
+        section[data-testid="stSidebar"] label[for^="Menu"]::after {{
+            content: "Menu";
+            font-weight: bold;
+            color: white;
+            margin-left: 10px;
+        }}
+        section[data-testid="stSidebar"] .stSelectbox > div::after {{
+            display: none !important;
         }}
         </style>
     """, unsafe_allow_html=True)
