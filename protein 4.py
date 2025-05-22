@@ -28,8 +28,8 @@ def show_avocado_image(file_path: str):
 # Hitung kebutuhan protein harian
 def calculate_protein_requirement(weight, activity_level, gender, age, goal, medical_condition):
     multiplier = {
-        'Sedentary (tidak aktif)': 0.8,
-        'Moderate (cukup aktif)': 1.2,
+        'Sedentary (tidak aktif)': 1.0,
+        'Moderate (cukup aktif)': 1.3,
         'Active (sangat aktif)': 1.6
     }
 
@@ -40,22 +40,22 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal, med
         gender_age_adj = 0.1
 
     goal_adj = {
-        'Menurunkan berat badan': -0.1,
+        'Menurunkan berat badan': -0.05,
         'Mempertahankan berat badan': 0,
-        'Meningkatkan massa otot': 0.2,
-        'Menambah berat badan': 0.15
+        'Meningkatkan massa otot': 0.3,
+        'Menambah berat badan': 0.25
     }
 
     medical_adj = {
         'Tidak ada': 0,
         'Hamil (Trimester 1)': 0.1,
         'Hamil (Trimester 2)': 0.2,
-        'Hamil (Trimester 3)': 0.3,
-        'Penyakit ginjal ringan': -0.2,
-        'Diabetes tipe 2': -0.1,
-        'Hipertensi': -0.05,
-        'Luka pasca operasi': 0.2,
-        'Malnutrisi': 0.25
+        'Hamil (Trimester 3)': 0.25,
+        'Penyakit ginjal ringan': -0.15,
+        'Diabetes tipe 2': 0.0,
+        'Hipertensi': 0.0,
+        'Luka pasca operasi': 0.3,
+        'Malnutrisi': 0.4
     }
 
     dasar = weight * (multiplier[activity_level] + gender_age_adj)
