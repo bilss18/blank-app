@@ -80,6 +80,27 @@ def show_food_recommendations():
     for name, (protein, note) in food_list.items():
         st.markdown(f"- **{name}**: {protein}g protein — _{note}_")
 
+# Simulasi piring protein
+def show_protein_plate_simulation(target_protein):
+    st.markdown("🍱 **Simulasi Piring Protein:**")
+    options = list(food_list.items())
+    selected = []
+    remaining = target_protein
+
+    for name, (protein, _) in options:
+        if remaining <= 0:
+            break
+        qty = int(remaining // protein)
+        if qty > 0:
+            selected.append((qty, name, protein * qty))
+            remaining -= protein * qty
+
+    for qty, name, total_protein in selected:
+        st.markdown(f"- {qty}x **{name}** → {total_protein:.1f}g protein")
+
+    if remaining > 0:
+        st.markdown(f"🔹 Sisa {remaining:.1f}g protein, bisa dilengkapi dengan camilan tinggi protein seperti susu atau kacang.")
+
 # Plot grafik kebutuhan protein
 def plot_protein_chart(dasar, tambahan_goal, tambahan_condition):
     labels = ['Dasar', 'Tujuan', 'Kondisi Medis']
@@ -151,6 +172,7 @@ def main():
                 show_avocado_image("avocado.webp")
                 autoplay_audio("snd_fragment_retrievewav-14728.mp3")
                 show_food_recommendations()
+                show_protein_plate_simulation(total)
 
     elif menu == 'Perkenalan Kelompok':
         st.subheader('👩‍🏫 Kelompok 5 (PMIP 1-E1)')
