@@ -34,12 +34,10 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal, med
         gender_age_adj = 0.1
 
     goal_adj = {
-        'Menurunkan berat badan': -0.1,
+        'Mengurangi berat badan': -0.1,
         'Mempertahankan berat badan': 0,
-        'Menambah berat badan ringan': 0.1,
-        'Menambah berat badan sedang': 0.2,
-        'Menambah berat badan banyak': 0.3,
-        'Menambah berat badan sangat banyak': 0.4
+        'Menambah berat badan': 0.2,
+        'Menaikkan massa otot': 0.4
     }
 
     medical_adj = {
@@ -123,12 +121,10 @@ def main():
             'Active (sangat aktif)'
         ])
         goal = st.selectbox('🎯 Tujuan:', [
-            'Menurunkan berat badan', 
+            'Mengurangi berat badan', 
             'Mempertahankan berat badan',
-            'Menambah berat badan ringan',
-            'Menambah berat badan sedang',
-            'Menambah berat badan banyak',
-            'Menambah berat badan sangat banyak'
+            'Menambah berat badan',
+            'Menaikkan massa otot'
         ])
         medical_condition = st.selectbox('🩺 Kondisi medis:', [
             'Tidak ada',
@@ -144,12 +140,10 @@ def main():
             st.success(f"🍗 Kebutuhan protein Anda: {total:.1f} gram/hari untuk tujuan '{goal}'")
 
             desc_goal = {
-                'Menurunkan berat badan': "Mengurangi protein untuk defisit kalori.",
+                'Mengurangi berat badan': "Mengurangi protein untuk defisit kalori.",
                 'Mempertahankan berat badan': "Protein dasar untuk stabilitas tubuh.",
-                'Menambah berat badan ringan': "Sedikit tambahan protein.",
-                'Menambah berat badan sedang': "Tambahan sedang untuk pertumbuhan.",
-                'Menambah berat badan banyak': "Tambahan besar untuk massa otot.",
-                'Menambah berat badan sangat banyak': "Tambahan maksimal untuk pertumbuhan cepat."
+                'Menambah berat badan': "Tambahan besar untuk kenaikan massa.",
+                'Menaikkan massa otot': "Tambahan maksimal untuk pembentukan otot."
             }
 
             st.markdown(f"**Keterangan:** {desc_goal[goal]}")
@@ -162,7 +156,6 @@ def main():
                 </ul>
             """, unsafe_allow_html=True)
 
-            # Gambar dan audio setelah hitung
             st.image("avocado.webp", width=250)
             autoplay_audio("snd_fragment_retrievewav-14728.mp3")
             show_food_recommendations()
