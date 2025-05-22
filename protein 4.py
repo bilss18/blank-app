@@ -1,7 +1,6 @@
 import streamlit as st
-import pandas as pd
 
-# Fungsi hitung protein harian
+# Fungsi hitung kebutuhan protein
 def calculate_protein(weight, activity_level, gender, age, goal, medical_condition):
     multiplier = {
         'Sedentary (tidak aktif)': 1.0,
@@ -30,7 +29,9 @@ def calculate_protein(weight, activity_level, gender, age, goal, medical_conditi
         'Diabetes tipe 2': 0,
         'Hipertensi': 0,
         'Luka pasca operasi': 0.3,
-        'Malnutrisi': 0.4
+        'Malnutrisi': 0.4,
+        'Penyakit jantung': -0.1,
+        'Asma': 0.05
     }
 
     dasar = weight * (multiplier[activity_level] + gender_age_adj)
@@ -39,7 +40,7 @@ def calculate_protein(weight, activity_level, gender, age, goal, medical_conditi
     total = dasar + tambahan_goal + tambahan_medical
     return total, dasar, tambahan_goal, tambahan_medical
 
-# Daftar makanan lokal tinggi protein
+# Data makanan lokal tinggi protein
 food_list = {
     "Tempe (100g)": (19, "Sumber protein nabati tinggi, murah dan mudah didapat."),
     "Telur rebus (1 butir)": (6, "Protein hewani cepat saji dan padat gizi."),
@@ -50,32 +51,69 @@ food_list = {
 }
 
 def show_food_recommendations():
-    st.markdown("🍽 **Rekomendasi Makanan Lokal Tinggi Protein:**")
+    st.markdown("### 🍽 Rekomendasi Makanan Lokal Tinggi Protein:")
     for name, (protein, note) in food_list.items():
         st.markdown(f"- **{name}**: {protein}g protein — _{note}_")
 
+def show_protein_plate_simulation(target_protein):
+    st.markdown("### 🍱 Simulasi Piring Protein:")
+    remaining = target_protein
+    selections = []
+    for name, (protein, _) in food_list.items():
+        if remaining <= 0:
+            break
+        qty = int(remaining // protein)
+        if qty > 0:
+            protein_total = protein * qty
+            selections.append((qty, name, protein_total))
+            remaining -= protein_total
+    for qty, name, protein_total in selections:
+        st.write(f"- {qty}x **{name}** → {protein_total:.1f}g protein")
+    if remaining > 0:
+        st.write(f"⚠️ Sisa kebutuhan protein sekitar {remaining:.1f}g, bisa dilengkapi dengan camilan kaya protein.")
+
 def main():
-    st.title('🍳 Kalkulator Kebutuhan Protein Harian')
+    st.title("🍳 Kalkulator Kebutuhan Protein Harian")
 
-    age = st.number_input('📅 Masukkan umur Anda (tahun):', min_value=1, step=1)
-    gender = st.selectbox('🚻 Pilih jenis kelamin Anda:', ['Laki-laki', 'Perempuan'])
-    height = st.number_input('📏 Masukkan tinggi badan Anda (cm):', min_value=50, step=1)
-    weight = st.number_input('⚖ Masukkan berat badan Anda (kg):', min_value=1.0, step=0.1)
-    activity_level = st.selectbox('🏃‍♀ Pilih tingkat aktivitas Anda:', [
-        'Sedentary (tidak aktif)', 'Moderate (cukup aktif)', 'Active (sangat aktif)'])
-    goal = st.selectbox('🎯 Apa tujuan Anda?', [
-        'Menurunkan berat badan', 'Mempertahankan berat badan', 'Meningkatkan massa otot', 'Menambah berat badan'])
-    medical_condition = st.selectbox('🩺 Kondisi Medis (jika ada):', [
-        'Tidak ada', 'Hamil (Trimester 1)', 'Hamil (Trimester 2)', 'Hamil (Trimester 3)',
-        'Penyakit ginjal ringan', 'Diabetes tipe 2', 'Hipertensi', 'Luka pasca operasi', 'Malnutrisi'])
+    st.sidebar.header("Input Data Anda")
+    age = st.sidebar.number_input("Umur (tahun)", min_value=1, max_value=120, value=25)
+    gender = st.sidebar.selectbox("Jenis Kelamin", ['Laki-laki', 'Perempuan'])
+    height = st.sidebar.number_input("Tinggi badan (cm)", min_value=50, max_value=250, value=170)
+    weight = st.sidebar.number_input("Berat badan (kg)", min_value=10.0, max_value=300.0, value=60.0, step=0.1)
+    activity_level = st.sidebar.selectbox("Tingkat Aktivitas", [
+        'Sedentary (tidak aktif)',
+        'Moderate (cukup aktif)',
+        'Active (sangat aktif)'
+    ])
+    goal = st.sidebar.selectbox("Tujuan", [
+        'Menurunkan berat badan',
+        'Mempertahankan berat badan',
+        'Meningkatkan massa otot',
+        'Menambah berat badan'
+    ])
+    medical_condition = st.sidebar.selectbox("Kondisi Medis (jika ada)", [
+        'Tidak ada',
+        'Hamil (Trimester 1)',
+        'Hamil (Trimester 2)',
+        'Hamil (Trimester 3)',
+        'Penyakit ginjal ringan',
+        'Diabetes tipe 2',
+        'Hipertensi',
+        'Luka pasca operasi',
+        'Malnutrisi',
+        'Penyakit jantung',
+        'Asma'
+    ])
 
-    if st.button("✅ OK, Hitung Kebutuhan Protein"):
+    if st.sidebar.button("Hitung Kebutuhan Protein"):
         total, dasar, goal_adj, med_adj = calculate_protein(weight, activity_level, gender, age, goal, medical_condition)
-        st.success(f"Kebutuhan protein harian Anda: **{total:.1f} gram**")
+        st.success(f"**Kebutuhan protein harian Anda: {total:.1f} gram**")
         st.write(f"- Kebutuhan dasar: {dasar:.1f} gram")
-        st.write(f"- Penyesuaian tujuan: {goal_adj:+.1f} gram")
-        st.write(f"- Penyesuaian medis: {med_adj:+.1f} gram")
+        st.write(f"- Penyesuaian karena tujuan: {goal_adj:+.1f} gram")
+        st.write(f"- Penyesuaian karena kondisi medis: {med_adj:+.1f} gram")
+        
         show_food_recommendations()
+        show_protein_plate_simulation(total)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
