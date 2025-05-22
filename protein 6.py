@@ -1,19 +1,7 @@
-]import streamlit as st
+import streamlit as st
 import base64
 
-# Fungsi untuk encode audio dan tampilkan autoplay
-def autoplay_audio(file_path: str):
-    with open(file_path, "rb") as f:
-        data = f.read()
-        b64 = base64.b64encode(data).decode()
-        md = f"""
-            <audio autoplay>
-            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-            </audio>
-        """
-        st.markdown(md, unsafe_allow_html=True)
-
-# Fungsi menampilkan gambar avocado
+# Fungsi untuk encode dan tampilkan gambar avocado
 def show_avocado_image(file_path: str):
     with open(file_path, "rb") as f:
         data = f.read()
@@ -23,7 +11,7 @@ def show_avocado_image(file_path: str):
         """
         st.markdown(md, unsafe_allow_html=True)
 
-# Fungsi perhitungan protein
+# Fungsi hitung kebutuhan protein
 def calculate_protein_requirement(weight, activity_level, gender, age, goal, medical_condition):
     multiplier = {
         'Sedentary (tidak aktif)': 0.8,
@@ -60,18 +48,18 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal, med
 
     return total, dasar, tambahan
 
-# Rekomendasi makanan lokal tinggi protein beserta gram protein
+# Rekomendasi makanan
 def show_food_recommendations():
     st.markdown("🍽 *Rekomendasi Makanan Lokal Tinggi Protein:*")
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("- 🐓 Ayam kampung tanpa kulit — 27g protein per 100g")
-        st.markdown("- 🐟 Ikan bandeng — 19g protein per 100g")
-        st.markdown("- 🥚 Telur ayam kampung — 13g protein per butir")
+        st.markdown("- 🐓 Ayam kampung tanpa kulit — 27g/100g")
+        st.markdown("- 🐟 Ikan bandeng — 19g/100g")
+        st.markdown("- 🥚 Telur ayam kampung — 13g/butir")
     with col2:
-        st.markdown("- 🧀 Tahu — 8g protein per 100g")
-        st.markdown("- 🌱 Tempe — 19g protein per 100g")
-        st.markdown("- 🌰 Kacang tanah — 26g protein per 100g")
+        st.markdown("- 🧀 Tahu — 8g/100g")
+        st.markdown("- 🌱 Tempe — 19g/100g")
+        st.markdown("- 🌰 Kacang tanah — 26g/100g")
 
 # Simulasi piring protein
 def show_protein_plate():
@@ -82,7 +70,7 @@ def show_protein_plate():
     - 1/3 piring: Sayuran hijau  
     """)
 
-# Main aplikasi
+# Halaman utama
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
 
@@ -91,6 +79,9 @@ def main():
         .stApp, html, body {
             background-color: #E6CCF5;
             font-family: 'Comic Sans MS', cursive;
+            color: black !important;
+        }
+        label, .stSidebar, .css-1v3fvcr, .css-1d391kg {
             color: black !important;
         }
         button[kind="primary"] {
@@ -134,32 +125,34 @@ def main():
         ])
 
         if st.button("✅ OK, Hitung Kebutuhan Protein"):
-            total, dasar, tambahan = calculate_protein_requirement(weight, activity_level, gender, age, goal, medical_condition)
+            total, dasar, tambahan = calculate_protein_requirement(
+                weight, activity_level, gender, age, goal, medical_condition)
 
             st.success(f"🍗 Kebutuhan protein harian Anda untuk tujuan '{goal}' adalah sekitar {total:.1f} gram per hari! 😋")
 
             desc_goal = {
-                'Menurunkan berat badan': "Pengurangan protein untuk mendukung penurunan berat badan secara sehat.",
-                'Mempertahankan berat badan': "Protein dasar untuk menjaga berat badan dan kesehatan otot.",
-                'Menambah berat badan ringan': "Penambahan protein ringan untuk meningkatkan berat badan secara bertahap.",
-                'Menambah berat badan sedang': "Penambahan protein sedang untuk mendukung peningkatan massa tubuh.",
-                'Menambah berat badan banyak': "Penambahan protein signifikan untuk pertumbuhan massa otot dan berat badan.",
-                'Menambah berat badan sangat banyak': "Penambahan protein maksimal untuk mempercepat peningkatan berat badan."
+                'Menurunkan berat badan': "Pengurangan protein untuk mendukung penurunan berat badan.",
+                'Mempertahankan berat badan': "Asupan protein dasar untuk mempertahankan kondisi tubuh.",
+                'Menambah berat badan ringan': "Penambahan ringan untuk meningkatkan berat secara bertahap.",
+                'Menambah berat badan sedang': "Asupan sedang untuk menaikkan berat badan lebih cepat.",
+                'Menambah berat badan banyak': "Tambahan protein besar untuk pertumbuhan massa tubuh.",
+                'Menambah berat badan sangat banyak': "Tambahan protein sangat besar untuk peningkatan signifikan."
             }
 
             st.markdown(f"**Keterangan:** {desc_goal[goal]}")
-
             st.markdown(f"""
                 <ul>
-                <li>Berat badan: {weight} kg</li>
-                <li>Tinggi badan: {height} cm</li>
-                <li>Kebutuhan dasar: {dasar:.1f} gram</li>
-                <li>Penyesuaian karena tujuan & kondisi medis: {tambahan:+.1f} gram</li>
+                    <li>Berat badan: {weight} kg</li>
+                    <li>Tinggi badan: {height} cm</li>
+                    <li>Kebutuhan dasar: {dasar:.1f} gram</li>
+                    <li>Penyesuaian karena tujuan & kondisi medis: {tambahan:+.1f} gram</li>
                 </ul>
             """, unsafe_allow_html=True)
 
+            # Tampilkan gambar avocado
             show_avocado_image("avocado.webp")
-            autoplay_audio("snd_fragment_retrievewav-14728.mp3")
+
+            # Tampilkan rekomendasi & piring protein
             show_food_recommendations()
             show_protein_plate()
 
