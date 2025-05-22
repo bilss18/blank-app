@@ -1,7 +1,7 @@
-import streamlit as st
+]import streamlit as st
 import base64
 
-# Fungsi untuk encode dan autoplay audio
+# Fungsi untuk encode audio dan tampilkan autoplay
 def autoplay_audio(file_path: str):
     with open(file_path, "rb") as f:
         data = f.read()
@@ -23,7 +23,7 @@ def show_avocado_image(file_path: str):
         """
         st.markdown(md, unsafe_allow_html=True)
 
-# Fungsi hitung kebutuhan protein harian
+# Fungsi perhitungan protein
 def calculate_protein_requirement(weight, activity_level, gender, age, goal, medical_condition):
     multiplier = {
         'Sedentary (tidak aktif)': 0.8,
@@ -60,7 +60,7 @@ def calculate_protein_requirement(weight, activity_level, gender, age, goal, med
 
     return total, dasar, tambahan
 
-# Rekomendasi makanan lokal tinggi protein beserta gram protein perkiraan
+# Rekomendasi makanan lokal tinggi protein beserta gram protein
 def show_food_recommendations():
     st.markdown("🍽 *Rekomendasi Makanan Lokal Tinggi Protein:*")
     col1, col2 = st.columns(2)
@@ -82,7 +82,7 @@ def show_protein_plate():
     - 1/3 piring: Sayuran hijau  
     """)
 
-# Fungsi utama aplikasi
+# Main aplikasi
 def main():
     st.set_page_config(page_title="Kalkulator Protein", layout="centered")
 
@@ -91,9 +91,6 @@ def main():
         .stApp, html, body {
             background-color: #E6CCF5;
             font-family: 'Comic Sans MS', cursive;
-            color: black !important;
-        }
-        label, .stSidebar, .css-1v3fvcr, .css-1d391kg {
             color: black !important;
         }
         button[kind="primary"] {
@@ -163,7 +160,6 @@ def main():
 
             show_avocado_image("avocado.webp")
             autoplay_audio("snd_fragment_retrievewav-14728.mp3")
-
             show_food_recommendations()
             show_protein_plate()
 
